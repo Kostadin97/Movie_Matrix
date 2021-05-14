@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const userRoutes = require("./routes/userRoutes");
 
 const mongoURI =
   "mongodb+srv://admin:admin@cluster.6ztzo.mongodb.net/themoviedb?retryWrites=true&w=majority";
@@ -17,8 +18,10 @@ mongoose
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cookieParser());
 app.use(express.static("client/build"));
+
+app.use("/api/users", userRoutes);
+
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
