@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
+const cors = require("cors");
 
 const mongoURI =
   "mongodb+srv://admin:admin@cluster.6ztzo.mongodb.net/themoviedb?retryWrites=true&w=majority";
@@ -19,6 +20,7 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("client/build"));
+app.use(cors());
 
 app.use("/api/users", userRoutes);
 
