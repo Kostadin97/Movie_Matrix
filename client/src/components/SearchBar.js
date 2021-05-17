@@ -5,9 +5,11 @@ const SearchBar = ({ input: keyword, onChange: setKeyword }) => {
   return (
     <Form.Control
       style={{
-        background: "#ff00002e",
+        background: "#4bbf736b",
         width: "70%",
-        margin: "0 auto"
+        margin: "0px auto",
+        borderRadius: "10px",
+        height: "50px",
       }}
       type="text"
       value={keyword}

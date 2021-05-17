@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
+import Footer from "./components/Footer";
 
 import Header from "./components/Header";
 import Home from "./views/Home";
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
       </Switch>
+      <Footer />
     </Suspense>
   );
 };
