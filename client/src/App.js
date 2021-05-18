@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Footer from "./components/Footer";
 
 import Header from "./components/Header";
+import Details from "./views/Details";
 import Home from "./views/Home";
 import Login from "./views/Login";
 import Register from "./views/Register";
@@ -13,6 +14,7 @@ const App = () => {
       <Header />
       <Switch>
         <Route path="/" component={Home} exact />
+        <Route path="/movie/:movieId" component={Details} exact />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
       </Switch>

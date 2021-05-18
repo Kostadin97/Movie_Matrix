@@ -12,10 +12,10 @@ function MainImage(props) {
         height: "500px",
         backgroundSize: "100%, cover",
         backgroundPosition: "center, center",
-        width: "85%",
+        width: "100%",
         margin: "0 auto",
         position: "relative",
-        marginTop: "20px",
+        marginTop: "1px",
       }}
     >
       <div>
