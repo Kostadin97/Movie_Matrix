@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button, ListGroup, Card } from "react-bootstrap";
+import GridCards from "../components/GridCards";
 import MainImage from "../components/MainImage";
+import Comment from "../components/Comment";
 import { API_KEY, API_URL, IMAGE_BASE_URL, IMAGE_SIZE } from "../config";
 
 function Details(props) {
   const movieId = props.match.params.movieId;
   const [movie, setMovie] = useState([]);
+  const [casts, setCasts] = useState([]);
 
   useEffect(() => {
     let endpoint = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
     fetch(endpoint)
       .then((res) => res.json())
-      .then((res) => setMovie(res));
+      .then((res) => {
+        setMovie(res);
+        let endpointForCasts = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
+        fetch(endpointForCasts)
+          .then((res) => res.json())
+          .then((res) => {
+            setCasts(res.cast);
+          });
+      });
   }, []);
-
-  console.log(movie);
 
   return (
     <>
@@ -50,8 +59,21 @@ function Details(props) {
           </Col>
           <Col style={{ textAlign: "center" }} lg={6}>
             <h1>Comments</h1>
+            <Comment props={props} />
           </Col>
         </Row>
+        {/* <Row>
+          {casts.map(
+            (cast, index) =>
+              cast.profile_path && (
+                <GridCards
+                  actor
+                  image={cast.profile_path}
+                  characterName={cast.characterName}
+                />
+              )
+          )}
+        </Row> */}
       </Container>
     </>
   );

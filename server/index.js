@@ -7,7 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const cors = require("cors");
 
 const mongoURI =
-  "mongodb+srv://admin:admin@cluster.6ztzo.mongodb.net/themoviedb?retryWrites=true&w=majority";
+  "mongodb+srv://admin:admin@cluster.6ztzo.mongodb.net/movie_matrix?retryWrites=true&w=majority";
 mongoose
   .connect(mongoURI, {
     useNewUrlParser: true,
@@ -23,6 +23,7 @@ app.use(express.static("client/build"));
 app.use(cors());
 
 app.use("/api/users", userRoutes);
+app.use("/api/comment", require("./routes/comment"));
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
