@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Container, Row, Col, Button, ListGroup, Card } from "react-bootstrap";
 import GridCards from "../components/GridCards";
 import MainImage from "../components/MainImage";
 import Comment from "../components/Comment";
 import { API_KEY, API_URL, IMAGE_BASE_URL, IMAGE_SIZE } from "../config";
+import SingleComment from "../components/SingleComment";
 
 function Details(props) {
   const movieId = props.match.params.movieId;
   const [movie, setMovie] = useState([]);
   const [casts, setCasts] = useState([]);
+  let [updateSuccess, setUpdateSuccess] = useState(0);
+  const [commentsToDisplay, setCommentsToDisplay] = useState([]);
 
   useEffect(() => {
     let endpoint = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
@@ -23,7 +27,17 @@ function Details(props) {
             setCasts(res.cast);
           });
       });
-  }, []);
+
+    axios
+      .post("http://localhost:5000/api/comment/getComments", { movieId })
+      .then((res) => {
+        setCommentsToDisplay(res.data.comments);
+
+        // setUpdateSuccess(updateSuccess + 1);
+      });
+  }, [updateSuccess]);
+
+  console.log(commentsToDisplay);
 
   return (
     <>
@@ -60,9 +74,12 @@ function Details(props) {
           <Col style={{ textAlign: "center" }} lg={6}>
             <h1>Comments</h1>
             <Comment props={props} />
+            {commentsToDisplay.map((comment, index) => (
+              <p>{comment.content}</p>
+            ))}
           </Col>
         </Row>
-        {/* <Row>
+        <Row>
           {casts.map(
             (cast, index) =>
               cast.profile_path && (
@@ -73,7 +90,7 @@ function Details(props) {
                 />
               )
           )}
-        </Row> */}
+        </Row>
       </Container>
     </>
   );

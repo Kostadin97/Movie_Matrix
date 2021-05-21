@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import SingleComment from "../components/SingleComment";
 
 const Comment = ({ props }) => {
   const [comment, setComment] = useState("");
@@ -15,7 +16,7 @@ const Comment = ({ props }) => {
     const token = localStorage.getItem("token");
 
     const commentObj = {
-      comment,
+      comment: comment,
       movieId,
     };
 
@@ -25,24 +26,26 @@ const Comment = ({ props }) => {
       },
     };
 
-    axios
-      .post("http://localhost:5000/api/comment/saveComment", commentObj, config)
-      .then((res) => {
-        console.log(res);
-      });
+    if (!comment) return;
+
+    axios.post(
+      "http://localhost:5000/api/comment/saveComment",
+      commentObj,
+      config
+    );
+    setComment("");
   };
 
   return (
-    <>
-      <form onSubmit={commentHandler} style={{ width: "100%" }}>
-        <input
-          onChange={handleChange}
-          type="text"
-          placeholder="Place Your Comment Here ..."
-        />
-        <input type="submit" />
-      </form>
-    </>
+    <form onSubmit={commentHandler} style={{ width: "100%" }}>
+      <input
+        onChange={handleChange}
+        type="text"
+        placeholder="Place Your Comment Here ..."
+        value={comment}
+      />
+      <button type="submit">Submit</button>
+    </form>
   );
 };
 
