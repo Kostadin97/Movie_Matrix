@@ -3,9 +3,7 @@ import axios from "axios";
 import { Container, Row, Col, Button, ListGroup, Card } from "react-bootstrap";
 import GridCards from "../components/GridCards";
 import MainImage from "../components/MainImage";
-import Comment from "../components/Comment";
 import { API_KEY, API_URL, IMAGE_BASE_URL, IMAGE_SIZE } from "../config";
-import SingleComment from "../components/SingleComment";
 import { useDispatch, useSelector } from "react-redux";
 import { getComments, commentMovie } from "../actions/movieActions";
 
@@ -51,7 +49,6 @@ function Details({ match }) {
 
   useEffect(() => {
     dispatch(getComments(movieId));
-    console.log('hello');
   }, [counter]);
 
   return (
@@ -64,8 +61,8 @@ function Details({ match }) {
 
       <Container>
         <Row style={{ marginTop: "50px" }}>
-          <Col lg={6}>
-            <Card style={{ width: "100%" }}>
+          <Col lg={4}>
+            <Card style={{ width: "100%", border: "none" }}>
               <Card.Header
                 style={{ textAlign: "center", backgroundColor: "whitesmoke" }}
               >
@@ -86,22 +83,47 @@ function Details({ match }) {
               </ListGroup>
             </Card>
           </Col>
-          <Col style={{ textAlign: "center" }} lg={6}>
+          <Col
+            style={{
+              textAlign: "center",
+              float: "right",
+              width: "50%",
+            }}
+            lg={8}
+          >
             <h1>Comments</h1>
-            <form onSubmit={commentHandler} style={{ width: "100%" }}>
+            <form
+              onSubmit={commentHandler}
+              style={{
+                width: "64%",
+                display: "flex",
+                justifyContent: "space-between",
+                margin: "0 auto",
+              }}
+            >
               <input
+                style={{ width: "85%", borderRadius: "5px", border: "none" }}
                 onChange={handleChange}
                 type="text"
                 placeholder="Place Your Comment Here ..."
                 value={comment}
               />
-              <button type="submit">Submit</button>
+              <Button
+                variant="success"
+                type="submit"
+                style={{ borderRadius: "5px" }}
+              >
+                Submit
+              </Button>
             </form>
-            {comments
-              ? comments.map((comment) => (
+
+            <div style={{ marginTop: "20px" }}>
+              {comments
+                ?.slice(comments.length - 5, comments.length)
+                .map((comment) => (
                   <p key={comment._id}>{comment.content}</p>
-                ))
-              : ""}
+                ))}
+            </div>
           </Col>
         </Row>
         {/* <Row>
