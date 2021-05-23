@@ -32,8 +32,6 @@ function Details(props) {
       .post("http://localhost:5000/api/comment/getComments", { movieId })
       .then((res) => {
         setCommentsToDisplay(res.data.comments);
-
-        // setUpdateSuccess(updateSuccess + 1);
       });
   }, [updateSuccess]);
 

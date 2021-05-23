@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SingleComment from "../components/SingleComment";
+import { useDispatch, useSelector } from "react-redux";
+import { commentMovie } from "../actions/movieActions";
 
 const Comment = ({ props }) => {
   const [comment, setComment] = useState("");
   const movieId = props.match.params.movieId;
+
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setComment(e.currentTarget.value);
@@ -13,26 +17,8 @@ const Comment = ({ props }) => {
   const commentHandler = (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem("token");
-
-    const commentObj = {
-      comment: comment,
-      movieId,
-    };
-
-    const config = {
-      headers: {
-        Authorization: token,
-      },
-    };
-
-    if (!comment) return;
-
-    axios.post(
-      "http://localhost:5000/api/comment/saveComment",
-      commentObj,
-      config
-    );
+    dispatch(commentMovie(comment, movieId));
+    
     setComment("");
   };
 
