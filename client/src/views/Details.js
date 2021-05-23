@@ -6,13 +6,33 @@ import MainImage from "../components/MainImage";
 import Comment from "../components/Comment";
 import { API_KEY, API_URL, IMAGE_BASE_URL, IMAGE_SIZE } from "../config";
 import SingleComment from "../components/SingleComment";
+import { useDispatch, useSelector } from "react-redux";
+import { getComments, commentMovie } from "../actions/movieActions";
 
-function Details(props) {
-  const movieId = props.match.params.movieId;
+function Details({ match }) {
+  const movieId = match.params.movieId;
   const [movie, setMovie] = useState([]);
   const [casts, setCasts] = useState([]);
-  let [updateSuccess, setUpdateSuccess] = useState(0);
-  const [commentsToDisplay, setCommentsToDisplay] = useState([]);
+  const [comment, setComment] = useState("");
+  let [counter, setCounter] = useState(0);
+
+  const dispatch = useDispatch();
+
+  const getMovieComments = useSelector((state) => state.getComments);
+  const { loading, error, comments } = getMovieComments;
+
+  const handleChange = (e) => {
+    setComment(e.currentTarget.value);
+  };
+
+  const commentHandler = (e) => {
+    e.preventDefault();
+
+    dispatch(commentMovie(comment, movieId));
+    let newCounter = counter + 1;
+    setCounter(newCounter);
+    setComment("");
+  };
 
   useEffect(() => {
     let endpoint = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
@@ -27,15 +47,12 @@ function Details(props) {
             setCasts(res.cast);
           });
       });
+  }, []);
 
-    axios
-      .post("http://localhost:5000/api/comment/getComments", { movieId })
-      .then((res) => {
-        setCommentsToDisplay(res.data.comments);
-      });
-  }, [updateSuccess]);
-
-  console.log(commentsToDisplay);
+  useEffect(() => {
+    dispatch(getComments(movieId));
+    console.log('hello');
+  }, [counter]);
 
   return (
     <>
@@ -71,13 +88,23 @@ function Details(props) {
           </Col>
           <Col style={{ textAlign: "center" }} lg={6}>
             <h1>Comments</h1>
-            <Comment props={props} />
-            {commentsToDisplay.map((comment, index) => (
-              <p>{comment.content}</p>
-            ))}
+            <form onSubmit={commentHandler} style={{ width: "100%" }}>
+              <input
+                onChange={handleChange}
+                type="text"
+                placeholder="Place Your Comment Here ..."
+                value={comment}
+              />
+              <button type="submit">Submit</button>
+            </form>
+            {comments
+              ? comments.map((comment) => (
+                  <p key={comment._id}>{comment.content}</p>
+                ))
+              : ""}
           </Col>
         </Row>
-        <Row>
+        {/* <Row>
           {casts.map(
             (cast, index) =>
               cast.profile_path && (
@@ -88,7 +115,7 @@ function Details(props) {
                 />
               )
           )}
-        </Row>
+        </Row> */}
       </Container>
     </>
   );

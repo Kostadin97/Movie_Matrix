@@ -3,12 +3,16 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
-import { commentMovieReducer } from "./reducers/movieReducers";
+import {
+  commentMovieReducer,
+  getCommentsReducer,
+} from "./reducers/movieReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   commentMovie: commentMovieReducer,
+  getComments: getCommentsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
