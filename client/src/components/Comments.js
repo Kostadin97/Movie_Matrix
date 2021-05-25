@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 
-const Comments = ({
-  CommentLists,
-  movieId,
-  refreshFunction,
-  postId,
-  movieTitle,
-}) => {
+const Comments = ({ CommentLists, movieId, refreshFunction }) => {
   const [comment, setComment] = useState("");
 
   const handleChange = (e) => {

@@ -4,7 +4,6 @@ import { Container, Row, Col, Button, ListGroup, Card } from "react-bootstrap";
 import GridCards from "../components/GridCards";
 import MainImage from "../components/MainImage";
 import { API_KEY, API_URL, IMAGE_BASE_URL, IMAGE_SIZE } from "../config";
-import { useDispatch, useSelector } from "react-redux";
 import Comments from "../components/Comments";
 
 function Details(props) {
@@ -12,11 +11,16 @@ function Details(props) {
   const [movie, setMovie] = useState([]);
   const [casts, setCasts] = useState([]);
   const [loadingMovies, setLoadingMovies] = useState(true);
-  const [comment, setComment] = useState("");
   const [CommentLists, setCommentLists] = useState([]);
+  const [LoadingForCasts, setLoadingForCasts] = useState(true);
+  const [ActorToggle, setActorToggle] = useState(false);
 
   const updateComment = (newComment) => {
     setCommentLists(CommentLists.concat(newComment));
+  };
+
+  const toggleActorView = () => {
+    setActorToggle(!ActorToggle);
   };
 
   useEffect(() => {
@@ -32,6 +36,7 @@ function Details(props) {
           .then((res) => {
             setCasts(res.cast);
           });
+        setLoadingForCasts(false);
       });
 
     axios
@@ -100,18 +105,37 @@ function Details(props) {
             />
           </Col>
         </Row>
-        {/* <Row>
-          {casts.map(
-            (cast, index) =>
-              cast.profile_path && (
-                <GridCards
-                  actor
-                  image={cast.profile_path}
-                  characterName={cast.characterName}
-                />
-              )
+        <Row>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "2rem",
+            }}
+          >
+            <Button onClick={toggleActorView}>Toggle Actor View </Button>
+          </div>
+
+          {ActorToggle && (
+            <Row gutter={[16, 16]}>
+              {!LoadingForCasts ? (
+                casts.map(
+                  (cast, index) =>
+                    cast.profile_path && (
+                      <GridCards
+                        actor
+                        image={cast.profile_path}
+                        characterName={cast.characterName}
+                      />
+                    )
+                )
+              ) : (
+                <div>loading...</div>
+              )}
+            </Row>
           )}
-        </Row> */}
+          <br />
+        </Row>
       </Container>
     </>
   );
