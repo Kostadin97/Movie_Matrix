@@ -15,7 +15,6 @@ function MainImage(props) {
         width: "100%",
         margin: "0 auto",
         position: "relative",
-        marginTop: "1px",
       }}
     >
       <div>

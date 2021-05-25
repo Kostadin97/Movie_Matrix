@@ -14,11 +14,13 @@ router.post("/saveComment", (req, res) => {
     content: comment,
   });
 
-  commentObj.save();
+  commentObj.save().then((result) => {
+    return res.status(200).json({ success: true, result });
+  });
 });
 
-router.post("/getComments", (req, res) => {
-  Comment.find({ movieId: req.body.movieId }).then((comments) => {
+router.get("/getComments/:movieId", (req, res) => {
+  Comment.find({ movieId: req.params.movieId }).then((comments) => {
     res.status(200).json({ success: true, comments });
   });
 });

@@ -5,31 +5,18 @@ import GridCards from "../components/GridCards";
 import MainImage from "../components/MainImage";
 import { API_KEY, API_URL, IMAGE_BASE_URL, IMAGE_SIZE } from "../config";
 import { useDispatch, useSelector } from "react-redux";
-import { getComments, commentMovie } from "../actions/movieActions";
+import Comments from "../components/Comments";
 
-function Details({ match }) {
-  const movieId = match.params.movieId;
+function Details(props) {
+  const movieId = props.match.params.movieId;
   const [movie, setMovie] = useState([]);
   const [casts, setCasts] = useState([]);
+  const [loadingMovies, setLoadingMovies] = useState(true);
   const [comment, setComment] = useState("");
-  let [counter, setCounter] = useState(0);
+  const [CommentLists, setCommentLists] = useState([]);
 
-  const dispatch = useDispatch();
-
-  const getMovieComments = useSelector((state) => state.getComments);
-  const { loading, error, comments } = getMovieComments;
-
-  const handleChange = (e) => {
-    setComment(e.currentTarget.value);
-  };
-
-  const commentHandler = (e) => {
-    e.preventDefault();
-
-    dispatch(commentMovie(comment, movieId));
-    let newCounter = counter + 1;
-    setCounter(newCounter);
-    setComment("");
+  const updateComment = (newComment) => {
+    setCommentLists(CommentLists.concat(newComment));
   };
 
   useEffect(() => {
@@ -38,6 +25,7 @@ function Details({ match }) {
       .then((res) => res.json())
       .then((res) => {
         setMovie(res);
+        setLoadingMovies(false);
         let endpointForCasts = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
         fetch(endpointForCasts)
           .then((res) => res.json())
@@ -45,19 +33,30 @@ function Details({ match }) {
             setCasts(res.cast);
           });
       });
-  }, []);
 
-  useEffect(() => {
-    dispatch(getComments(movieId));
-  }, [counter]);
+    axios
+      .get(`http://localhost:5000/api/comment/getComments/${movieId}`)
+      .then((response) => {
+        if (response.data.success) {
+          console.log(response.data.comments);
+          setCommentLists(response.data.comments);
+        } else {
+          alert("Failed to get comments Info");
+        }
+      });
+  }, []);
 
   return (
     <>
-      <MainImage
-        image={`${IMAGE_BASE_URL}${IMAGE_SIZE}${movie.backdrop_path}`}
-        title={movie.original_title}
-        text={movie.overview}
-      />
+      {!loadingMovies ? (
+        <MainImage
+          image={`${IMAGE_BASE_URL}${IMAGE_SIZE}${movie.backdrop_path}`}
+          title={movie.original_title}
+          text={movie.overview}
+        />
+      ) : (
+        <div>loading...</div>
+      )}
 
       <Container>
         <Row style={{ marginTop: "50px" }}>
@@ -92,38 +91,13 @@ function Details({ match }) {
             lg={8}
           >
             <h1>Comments</h1>
-            <form
-              onSubmit={commentHandler}
-              style={{
-                width: "64%",
-                display: "flex",
-                justifyContent: "space-between",
-                margin: "0 auto",
-              }}
-            >
-              <input
-                style={{ width: "85%", borderRadius: "5px", border: "none" }}
-                onChange={handleChange}
-                type="text"
-                placeholder="Place Your Comment Here ..."
-                value={comment}
-              />
-              <Button
-                variant="success"
-                type="submit"
-                style={{ borderRadius: "5px" }}
-              >
-                Submit
-              </Button>
-            </form>
-
-            <div style={{ marginTop: "20px" }}>
-              {comments
-                ?.slice(comments.length - 5, comments.length)
-                .map((comment) => (
-                  <p key={comment._id}>{comment.content}</p>
-                ))}
-            </div>
+            <Comments
+              movieTitle={movie.original_title}
+              CommentLists={CommentLists}
+              postId={movieId}
+              refreshFunction={updateComment}
+              movieId={movieId}
+            />
           </Col>
         </Row>
         {/* <Row>
