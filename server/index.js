@@ -3,8 +3,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
+const movieRoutes = require("./routes/movieRoutes");
 const userRoutes = require("./routes/userRoutes");
 const cors = require("cors");
+const path = require("path");
 
 const mongoURI =
   "mongodb+srv://admin:admin@cluster.6ztzo.mongodb.net/movie_matrix?retryWrites=true&w=majority";
@@ -25,6 +27,7 @@ app.use(express.static("client/build"));
 app.use(cors());
 
 app.use("/api/users", userRoutes);
+app.use("/api/movies", movieRoutes);
 app.use("/api/comment", require("./routes/comment"));
 
 app.get("*", (req, res) => {
