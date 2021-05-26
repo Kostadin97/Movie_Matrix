@@ -3,12 +3,12 @@ import { Card, Avatar, Col, Typography, Row } from "react-bootstrap";
 import { IMAGE_BASE_URL } from "../config";
 
 function GridCards(props) {
-  let { actor, key, image, movieId, movieName, characterName } = props;
+  let { actor, key, image, movieId, movieName, characterName, actorId } = props;
   const POSTER_SIZE = "w154";
 
   if (actor) {
     return (
-      <Col key={key} lg={3} md={4} xs={24} style={{ marginTop: "20px" }}>
+      <Col key={actorId} lg={3} md={4} xs={24} style={{ marginTop: "20px" }}>
         <div style={{ position: "relative" }}>
           <img
             style={{ width: "100%", height: "320px" }}

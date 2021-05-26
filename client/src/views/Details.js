@@ -51,6 +51,8 @@ function Details(props) {
       });
   }, []);
 
+  console.log(casts);
+
   return (
     <>
       {!loadingMovies ? (
@@ -124,6 +126,7 @@ function Details(props) {
                     cast.profile_path && (
                       <GridCards
                         actor
+                        actorId={cast.id}
                         image={cast.profile_path}
                         characterName={cast.characterName}
                       />
