@@ -5,8 +5,9 @@ const { Comment } = require("../models/Comment");
 
 router.post("/saveComment", (req, res) => {
   const { comment, movieId } = req.body;
-  const token = req.headers.authorization.split(" ")[1];
-  let userId = jwt.decode(token, "somesecret")._id;
+  const token = req.headers.authorization;
+  let userId = jwt.decode(token, "somesecret").userId;
+  console.log(userId);
 
   const commentObj = new Comment({
     writer: userId,
@@ -19,10 +20,15 @@ router.post("/saveComment", (req, res) => {
   });
 });
 
-router.get("/getComments/:movieId", (req, res) => {
-  Comment.find({ movieId: req.params.movieId }).then((comments) => {
-    res.status(200).json({ success: true, comments });
-  });
+router.get("/getComments/:movieId", async (req, res) => {
+  await Comment.find({ movieId: req.params.movieId })
+    .then((comments) => {
+      console.log(comments);
+      res.status(200).json({ success: true, comments });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = router;

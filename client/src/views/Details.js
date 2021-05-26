@@ -69,12 +69,9 @@ function Details(props) {
         <Row style={{ marginTop: "50px" }}>
           <Col lg={4}>
             <Card style={{ width: "100%", border: "none" }}>
-              <Card.Header
-                style={{ textAlign: "center", backgroundColor: "whitesmoke" }}
-              >
-                {movie.original_title}
-              </Card.Header>
               <ListGroup variant="flush">
+                <h1>Details</h1>
+
                 <ListGroup.Item>
                   Release Date: {movie.release_date}
                 </ListGroup.Item>
@@ -86,7 +83,14 @@ function Details(props) {
                   Vote Average: {movie.vote_average}
                 </ListGroup.Item>
                 <ListGroup.Item>Popularity: {movie.popularity}</ListGroup.Item>
+                <ListGroup.Item></ListGroup.Item>
               </ListGroup>
+              <Button
+                style={{ width: "60%", marginTop: "10px" }}
+                onClick={toggleActorView}
+              >
+                Toggle Actor View{" "}
+              </Button>
             </Card>
           </Col>
           <Col
@@ -108,16 +112,6 @@ function Details(props) {
           </Col>
         </Row>
         <Row>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "2rem",
-            }}
-          >
-            <Button onClick={toggleActorView}>Toggle Actor View </Button>
-          </div>
-
           {ActorToggle && (
             <Row gutter={[16, 16]}>
               {!LoadingForCasts ? (

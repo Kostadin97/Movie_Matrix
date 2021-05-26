@@ -13,7 +13,9 @@ const Comments = ({ CommentLists, movieId, refreshFunction }) => {
   const commentHandler = (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem("token");
+    const token = JSON.parse(localStorage.getItem("userInfo")).token;
+    console.log(token);
+    
 
     const commentObj = {
       comment: comment,
