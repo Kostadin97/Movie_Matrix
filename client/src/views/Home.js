@@ -33,7 +33,7 @@ function LandingPage() {
       .then((result) => {
         setMovies([...Movies, ...result.results]);
         setMoviesDefault([...MoviesDefault, ...result.results]);
-        setMainMovieImage(MainMovieImage || result.results[3]);
+        setMainMovieImage(MainMovieImage || result.results[1]);
         setCurrentPage(result.page);
       }, setLoading(false))
       .catch((error) => console.error("Error:", error));

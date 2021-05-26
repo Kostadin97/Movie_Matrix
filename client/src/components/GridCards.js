@@ -8,7 +8,7 @@ function GridCards(props) {
 
   if (actor) {
     return (
-      <Col key={actorId} lg={3} md={4} xs={24} style={{ marginTop: "20px" }}>
+      <Col key={actorId} lg={3} md={6} xs={12} style={{ marginTop: "20px" }}>
         <div style={{ position: "relative" }}>
           <img
             style={{ width: "100%", height: "320px" }}
@@ -20,7 +20,7 @@ function GridCards(props) {
     );
   } else {
     return (
-      <Col key={key} lg={3} md={8} xs={24} style={{ marginTop: "20px" }}>
+      <Col key={key} lg={3} md={6} xs={12} style={{ marginTop: "20px" }}>
         <div style={{ position: "relative" }}>
           <a href={`/movie/${movieId}`}>
             <img

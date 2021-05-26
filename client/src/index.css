@@ -38,3 +38,7 @@ input.error {
   height: 5px;
   margin-top: -12px;
 }
+
+::placeholder {
+  font-size: 1.6em;
+}
