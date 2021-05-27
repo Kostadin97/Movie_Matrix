@@ -23,11 +23,29 @@ function Details(props) {
     setActorToggle(!ActorToggle);
   };
 
+  const addToFavouritesHandler = () => {
+    const token = JSON.parse(localStorage.getItem("userInfo")).token;
+    console.log(token);
+    const config = {
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+      },
+    };
+
+    axios
+      .post(`http://localhost:5000/api/movies/save/${movieId}`, config)
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
   useEffect(() => {
     let endpoint = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
     fetch(endpoint)
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         setMovie(res);
         setLoadingMovies(false);
         let endpointForCasts = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
@@ -48,10 +66,11 @@ function Details(props) {
         } else {
           alert("Failed to get comments Info");
         }
-      });
+      })
+      .catch((err) => console.log(err));
   }, []);
 
-  console.log(casts);
+  console.log(movie);
 
   return (
     <>
@@ -85,6 +104,13 @@ function Details(props) {
                 <ListGroup.Item>Popularity: {movie.popularity}</ListGroup.Item>
                 <ListGroup.Item></ListGroup.Item>
               </ListGroup>
+              <Button
+                variant="primary"
+                style={{ width: "70%", marginTop: "10px" }}
+                onClick={addToFavouritesHandler}
+              >
+                Add to Favourites
+              </Button>
               <Button
                 style={{ width: "60%", marginTop: "10px" }}
                 onClick={toggleActorView}

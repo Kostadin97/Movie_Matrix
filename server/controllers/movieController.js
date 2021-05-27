@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 const addToFav = asyncHandler(async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
-  console.log(token);
+  const token = req.body.headers.Authorization;
+
   const decoded = jwt.verify(token, "somesecret");
   const userId = decoded.userId;
 

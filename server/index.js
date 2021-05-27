@@ -9,8 +9,8 @@ const cors = require("cors");
 const path = require("path");
 
 const mongoURI =
-  "mongodb+srv://admin:admin@cluster.6ztzo.mongodb.net/movie_matrix?retryWrites=true&w=majority";
-// "mongodb://localhost:27017/movie-matrix";
+  // "mongodb+srv://admin:admin@cluster.6ztzo.mongodb.net/movie_matrix?retryWrites=true&w=majority";
+"mongodb://localhost:27017/movie-matrix";
 
 mongoose
   .connect(mongoURI, {
