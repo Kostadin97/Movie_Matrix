@@ -15,6 +15,15 @@ function Details(props) {
   const [LoadingForCasts, setLoadingForCasts] = useState(true);
   const [ActorToggle, setActorToggle] = useState(false);
 
+  const token = JSON.parse(localStorage.getItem("userInfo")).token;
+  console.log(token);
+  const config = {
+    headers: {
+      Authorization: token,
+      "Content-Type": "application/json",
+    },
+  };
+
   const updateComment = (newComment) => {
     setCommentLists(CommentLists.concat(newComment));
   };
@@ -24,15 +33,6 @@ function Details(props) {
   };
 
   const addToFavouritesHandler = () => {
-    const token = JSON.parse(localStorage.getItem("userInfo")).token;
-    console.log(token);
-    const config = {
-      headers: {
-        Authorization: token,
-        "Content-Type": "application/json",
-      },
-    };
-
     axios
       .post(`http://localhost:5000/api/movies/save/${movieId}`, config)
       .then((res) => {
@@ -68,6 +68,12 @@ function Details(props) {
         }
       })
       .catch((err) => console.log(err));
+
+    axios
+      .get("http://localhost:5000/api/users/getLikes", config)
+      .then((res) => {
+        console.log(res);
+      });
   }, []);
 
   console.log(movie);

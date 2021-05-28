@@ -23,7 +23,6 @@ router.post("/saveComment", (req, res) => {
 router.get("/getComments/:movieId", async (req, res) => {
   await Comment.find({ movieId: req.params.movieId })
     .then((comments) => {
-      console.log(comments);
       res.status(200).json({ success: true, comments });
     })
     .catch((err) => {

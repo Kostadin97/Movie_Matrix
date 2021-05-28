@@ -57,4 +57,23 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { loginUser, registerUser };
+const getLikes = asyncHandler(async (req, res) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(token, "somesecret");
+  const userId = decoded.userId;
+  User.findById(userId).then((user) => {
+    if (!user) {
+      return res.status(500).json({
+        msg: `User NOT Found.`,
+        success: false,
+      });
+    } else {
+      console.log(user.favourites);
+      return res
+        .status(200)
+        .json({ success: true, favourites: user.favourites });
+    }
+  });
+});
+
+module.exports = { loginUser, registerUser, getLikes };
