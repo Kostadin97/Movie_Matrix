@@ -5,23 +5,33 @@ import GridCards from "../components/GridCards";
 import MainImage from "../components/MainImage";
 import { API_KEY, API_URL, IMAGE_BASE_URL, IMAGE_SIZE } from "../config";
 import Comments from "../components/Comments";
+import AddRemoveFav from "../components/AddRemoveFav";
 
 function Details(props) {
   const movieId = props.match.params.movieId;
   const [movie, setMovie] = useState([]);
   const [casts, setCasts] = useState([]);
+  const [favourites, setFavourites] = useState([]);
   const [loadingMovies, setLoadingMovies] = useState(true);
   const [CommentLists, setCommentLists] = useState([]);
   const [LoadingForCasts, setLoadingForCasts] = useState(true);
   const [ActorToggle, setActorToggle] = useState(false);
-
   const token = JSON.parse(localStorage.getItem("userInfo")).token;
-  console.log(token);
   const config = {
     headers: {
       Authorization: token,
       "Content-Type": "application/json",
     },
+  };
+
+  const removeFavourites = async (movieId) => {
+    const movieIdx = favourites.indexOf(movieId);
+    favourites.splice(movieIdx, 1);
+    await setFavourites(favourites.splice(movieIdx, 1));
+  };
+
+  const updateFavourites = (movieId) => {
+    setFavourites(favourites.concat(movieId));
   };
 
   const updateComment = (newComment) => {
@@ -32,20 +42,11 @@ function Details(props) {
     setActorToggle(!ActorToggle);
   };
 
-  const addToFavouritesHandler = () => {
-    axios
-      .post(`http://localhost:5000/api/movies/save/${movieId}`, config)
-      .then((res) => {
-        console.log(res);
-      });
-  };
-
   useEffect(() => {
     let endpoint = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
     fetch(endpoint)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         setMovie(res);
         setLoadingMovies(false);
         let endpointForCasts = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
@@ -61,7 +62,6 @@ function Details(props) {
       .get(`http://localhost:5000/api/comment/getComments/${movieId}`)
       .then((response) => {
         if (response.data.success) {
-          console.log(response.data.comments);
           setCommentLists(response.data.comments);
         } else {
           alert("Failed to get comments Info");
@@ -70,13 +70,12 @@ function Details(props) {
       .catch((err) => console.log(err));
 
     axios
-      .get("http://localhost:5000/api/users/getLikes", config)
+      .get("http://localhost:5000/api/users/getFavourites", config)
       .then((res) => {
-        console.log(res);
-      });
+        setFavourites(res.data.favourites);
+      })
+      .catch((err) => console.log(err));
   }, []);
-
-  console.log(movie);
 
   return (
     <>
@@ -110,13 +109,13 @@ function Details(props) {
                 <ListGroup.Item>Popularity: {movie.popularity}</ListGroup.Item>
                 <ListGroup.Item></ListGroup.Item>
               </ListGroup>
-              <Button
-                variant="primary"
-                style={{ width: "70%", marginTop: "10px" }}
-                onClick={addToFavouritesHandler}
-              >
-                Add to Favourites
-              </Button>
+              <AddRemoveFav
+                movieTitle={movie.original_title}
+                favourites={favourites}
+                refreshFunction={updateFavourites}
+                removeFavourites={removeFavourites}
+                movieId={movieId}
+              />
               <Button
                 style={{ width: "60%", marginTop: "10px" }}
                 onClick={toggleActorView}

@@ -13,19 +13,19 @@ const addToFav = asyncHandler(async (req, res) => {
     .then((user) => {
       if (!user.favourites.includes(movieId)) {
         user.favourites.push(movieId);
-        user.save();
+        user.save().then((result) => {
+          return res.status(200).json({
+            success: true,
+            result,
+            msg: "Movie added to Favourites successfully.",
+          });
+        });
       } else {
         return res.status(400).json({
           success: false,
           msg: "Already added to Favourites.",
         });
       }
-    })
-    .then(() => {
-      return res.status(200).json({
-        success: true,
-        msg: "Movie added to Favourites successfully.",
-      });
     })
     .catch((err) => {
       return res.status(500).json({
@@ -35,7 +35,8 @@ const addToFav = asyncHandler(async (req, res) => {
 });
 
 const removeFromFav = asyncHandler(async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req.body.headers.Authorization;
+
   const decoded = jwt.verify(token, "somesecret");
   const userId = decoded.userId;
 
@@ -45,10 +46,12 @@ const removeFromFav = asyncHandler(async (req, res) => {
       if (user.favourites.includes(movieId)) {
         let movieIndex = user.favourites.indexOf(movieId);
         user.favourites.splice(movieIndex, 1);
-        user.save();
-        return res.status(200).json({
-          success: true,
-          msg: "Movie removed from Favourites successfully.",
+        user.save().then((result) => {
+          return res.status(200).json({
+            success: true,
+            msg: "Movie removed from Favourites successfully.",
+            result,
+          });
         });
       } else {
         return res.status(400).json({
@@ -57,7 +60,6 @@ const removeFromFav = asyncHandler(async (req, res) => {
         });
       }
     })
-    .then(() => {})
     .catch((err) => {
       return res.status(500).json({
         msg: `Movie with id: ${movieId} was NOT added to Favourites successfully.`,

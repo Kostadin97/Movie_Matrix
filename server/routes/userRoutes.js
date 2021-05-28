@@ -3,11 +3,11 @@ const router = express.Router();
 const {
   loginUser,
   registerUser,
-  getLikes,
+  getFavourites,
 } = require("../controllers/userController");
 
 router.route("/").post(registerUser);
 router.post("/login", loginUser);
-router.route("/getLikes").get(getLikes);
+router.route("/getFavourites").get(getFavourites);
 
 module.exports = router;

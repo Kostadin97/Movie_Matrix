@@ -57,7 +57,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-const getLikes = asyncHandler(async (req, res) => {
+const getFavourites = asyncHandler(async (req, res) => {
   const token = req.headers.authorization;
   const decoded = jwt.verify(token, "somesecret");
   const userId = decoded.userId;
@@ -76,4 +76,4 @@ const getLikes = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { loginUser, registerUser, getLikes };
+module.exports = { loginUser, registerUser, getFavourites };
