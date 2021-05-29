@@ -35,25 +35,25 @@ const AddRemoveFav = ({
   console.log(favourites);
 
   return (
-    <div>
+    <>
       {favourites.includes(movieId) ? (
         <Button
-          variant="primary"
-          style={{ width: "70%", marginTop: "10px" }}
+          variant="dark"
+          style={{ width: "100%", marginTop: "10px" }}
           onClick={removeFromFavouritesHandler}
         >
           Remove from Favourites
         </Button>
       ) : (
         <Button
-          variant="primary"
-          style={{ width: "70%", marginTop: "10px" }}
+          variant="dark"
+          style={{ width: "100%", marginTop: "10px" }}
           onClick={addToFavouritesHandler}
         >
           Add to Favourites
         </Button>
       )}
-    </div>
+    </>
   );
 };
 

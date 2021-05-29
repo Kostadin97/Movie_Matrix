@@ -94,9 +94,8 @@ function Details(props) {
           <Col lg={4}>
             <Card style={{ width: "100%", border: "none" }}>
               <ListGroup variant="flush">
-                <h1>Details</h1>
-
                 <ListGroup.Item>
+                  <h1 style={{ marginBottom: "30px" }}>Details</h1>
                   Release Date: {movie.release_date}
                 </ListGroup.Item>
                 <ListGroup.Item>Revenue: {movie.revenue}</ListGroup.Item>
@@ -109,21 +108,30 @@ function Details(props) {
                 <ListGroup.Item>Popularity: {movie.popularity}</ListGroup.Item>
                 <ListGroup.Item></ListGroup.Item>
               </ListGroup>
-              <AddRemoveFav
-                movieTitle={movie.original_title}
-                favourites={favourites}
-                refreshFunction={updateFavourites}
-                removeFavourites={removeFavourites}
-                movieId={movieId}
-              />
-              <Button
-                style={{ width: "60%", marginTop: "10px" }}
-                onClick={toggleActorView}
-              >
-                Toggle Actor View{" "}
-              </Button>
             </Card>
+
+            <Row>
+              <Col>
+                <AddRemoveFav
+                  movieTitle={movie.original_title}
+                  favourites={favourites}
+                  refreshFunction={updateFavourites}
+                  removeFavourites={removeFavourites}
+                  movieId={movieId}
+                />
+              </Col>
+              <Col>
+                <Button
+                  style={{ width: "100%", marginTop: "10px" }}
+                  onClick={toggleActorView}
+                  variant="danger"
+                >
+                  Toggle Actor View{" "}
+                </Button>
+              </Col>
+            </Row>
           </Col>
+
           <Col
             style={{
               textAlign: "center",

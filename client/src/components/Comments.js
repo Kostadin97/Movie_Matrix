@@ -15,7 +15,6 @@ const Comments = ({ CommentLists, movieId, refreshFunction }) => {
 
     const token = JSON.parse(localStorage.getItem("userInfo")).token;
     console.log(token);
-    
 
     const commentObj = {
       comment: comment,
@@ -58,7 +57,7 @@ const Comments = ({ CommentLists, movieId, refreshFunction }) => {
           placeholder="Place Your Comment Here ..."
           value={comment}
         />
-        <Button variant="success" type="submit" style={{ borderRadius: "5px" }}>
+        <Button variant="warning" type="submit" style={{ borderRadius: "5px" }}>
           Submit
         </Button>
       </form>
@@ -68,7 +67,7 @@ const Comments = ({ CommentLists, movieId, refreshFunction }) => {
           (comment, index) =>
             !comment.responseTo && (
               <React.Fragment key={comment._id}>
-                <p>{comment.content}</p>
+                <p style={{ marginTop: "20px" }}>{comment.content}</p>
               </React.Fragment>
             )
         )}
