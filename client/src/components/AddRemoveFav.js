@@ -7,6 +7,9 @@ const AddRemoveFav = ({
   refreshFunction,
   movieId,
   favourites,
+  movieTitle,
+  runtime,
+  voteAverage,
 }) => {
   const token = JSON.parse(localStorage.getItem("userInfo")).token;
   const config = {
@@ -18,7 +21,11 @@ const AddRemoveFav = ({
 
   const addToFavouritesHandler = async () => {
     await axios
-      .post(`http://localhost:5000/api/movies/save/${movieId}`, config)
+      .post(
+        `http://localhost:5000/api/movies/save/${movieId}`,
+        { movieId, movieTitle, runtime, voteAverage },
+        config
+      )
       .then(() => {
         refreshFunction(movieId);
       });
@@ -36,21 +43,21 @@ const AddRemoveFav = ({
 
   return (
     <>
-      {favourites.includes(movieId) ? (
-        <Button
-          variant="dark"
-          style={{ width: "100%", marginTop: "10px" }}
-          onClick={removeFromFavouritesHandler}
-        >
-          Remove from Favourites
-        </Button>
-      ) : (
+      {!favourites.includes(movieId) ? (
         <Button
           variant="dark"
           style={{ width: "100%", marginTop: "10px" }}
           onClick={addToFavouritesHandler}
         >
           Add to Favourites
+        </Button>
+      ) : (
+        <Button
+          variant="dark"
+          style={{ width: "100%", marginTop: "10px" }}
+          onClick={removeFromFavouritesHandler}
+        >
+          Remove from Favourites
         </Button>
       )}
     </>

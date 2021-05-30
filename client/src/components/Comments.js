@@ -6,7 +6,6 @@ const Comments = ({ CommentLists, movieId, refreshFunction }) => {
   const [comment, setComment] = useState("");
 
   const handleChange = (e) => {
-    console.log(e.currentTarget.value);
     setComment(e.currentTarget.value);
   };
 
@@ -14,7 +13,6 @@ const Comments = ({ CommentLists, movieId, refreshFunction }) => {
     e.preventDefault();
 
     const token = JSON.parse(localStorage.getItem("userInfo")).token;
-    console.log(token);
 
     const commentObj = {
       comment: comment,

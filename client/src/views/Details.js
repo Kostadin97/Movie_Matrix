@@ -118,6 +118,8 @@ function Details(props) {
                   refreshFunction={updateFavourites}
                   removeFavourites={removeFavourites}
                   movieId={movieId}
+                  runtime={movie.runtime}
+                  voteAverage={movie.vote_average}
                 />
               </Col>
               <Col>
